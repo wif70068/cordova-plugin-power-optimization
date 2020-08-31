@@ -30,6 +30,7 @@ public class ProtectedApps {
             for (Intent intent : cons.getPowermanagerIntents()) {
                 if (isCallable(context, intent)) {
                     foundCorrectIntent = true;
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     break;
                 }
