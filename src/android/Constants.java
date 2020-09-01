@@ -10,15 +10,19 @@ import android.support.annotation.NonNull;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Constants {
 
     private Context context;
 
+    // Check regularly with https://stackoverflow.com/questions/48166206/how-to-start-power-manager-of-all-android-manufactures-to-enable-background-and
+
     // MIUI
     private static final String MIUI_ACTION_POWER_SAVE_EXTRA_NAME = "package_name";
     private static final String MIUI_ACTION_POWER_SAVE_EXTRA_LABEL = "package_label";
     private static final String[] MIUI_ACTION_POWERSAVE = {"com.miui.powerkeeper", "com.miui.powerkeeper.ui.HiddenAppsConfigActivity"};
+    private static final String[] MIUI_ACTION_AUTOSTART = {"com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"};
 
     // SAMSUNG crash "com.samsung.android.lool","com.samsung.android.sm.ui.battery.AppSleepListActivity"
     private static final String SAMSUNG_SYSTEMMANAGER_POWERSAVING_ACTION = "com.samsung.android.sm.ACTION_BATTERY";
@@ -39,20 +43,53 @@ public class Constants {
     private static final String HUAWEI_ACTION_POWERSAVING = "huawei.intent.action.HSM_PROTECTED_APPS";
     private static final String HUAWEI_COMPONENT_POWERSAVING_PKG = "com.huawei.systemmanager";
     private static final String HUAWEI_COMPONENT_POWERSAVING_CLS = "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity";
+    private static final String HUAWEI_COMPONENT_POWERSAVING2_CLS = "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity";
+    private static final String HUAWEI_COMPONENT_POWERSAVING3_CLS = "com.huawei.systemmanager.optimize.process.ProtectActivity";
+
 
     // LETV
     private static final String LETV_ACTION_POWERSAVING_PKG = "com.letv.android.letvsafe";
     private static final String LETV_ACTION_POWERSAVING_CLS = "com.letv.android.letvsafe.BackgroundAppManageActivity";
+    private static final String LETV_ACTION_AUTOBOOT_CLS = "com.letv.android.letvsafe.AutobootManageActivity";
 
     // MEIZU
-
     private static final String MEIZU_POWERSAVING_ACTION = "com.meizu.power.PowerAppKilledNotification";
     private static final String MEIZU_DEFAULT_PACKAGE = "com.meizu.safe";
     private static final String MEIZU_POWERSAVING_ACTIVITY_V2_2 = "com.meizu.safe.cleaner.RubbishCleanMainActivity";
     private static final String MEIZU_POWERSAVING_ACTIVITY_V3_4 = "com.meizu.safe.powerui.AppPowerManagerActivity";
     private static final String MEIZU_POWERSAVING_ACTIVITY_V3_7 = "com.meizu.safe.powerui.PowerAppPermissionActivity";
 
-    public List<Intent> powerManagerIntents;
+    // ColorOS
+    private static final String COLOROS_ACTION_POWERSAVING_PKG = "com.coloros.safecenter";
+    private static final String COLOROS_ACTION_AUTOBOOT1_CLS = "com.coloros.safecenter.permission.startup.StartupAppListActivity";
+    private static final String COLOROS_ACTION_AUTOBOOT2_CLS = "com.coloros.safecenter.startupapp.StartupAppListActivity";
+
+    // OPPO
+    private static final String OPPO_ACTION_POWERSAVING_PKG = "com.oppo.safe";
+    private static final String OPPO_ACTION_POWERSAVING_CLS = "com.oppo.safe.permission.startup.StartupAppListActivity";
+
+    // IQOO
+    private static final String IQOO_ACTION_POWERSAVING_PKG = "com.iqoo.secure";
+    private static final String IQOO_ACTION_POWERSAVING1_CLS = "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity";
+    private static final String IQOO_ACTION_POWERSAVING2_CLS = "com.iqoo.secure.ui.phoneoptimize.BgStartUpManager";
+
+    // VIVO
+    private static final String VIVO_ACTION_POWERSAVING_PKG = "com.vivo.permissionmanager";
+    private static final String VIVO_ACTION_POWERSAVING_CLS = "com.vivo.permissionmanager.activity.BgStartUpManagerActivity";
+
+    // HTC
+    private static final String HTC_ACTION_POWERSAVING_PKG = "com.htc.pitroad";
+    private static final String HTC_ACTION_POWERSAVING_CLS = "com.htc.pitroad.landingpage.activity.LandingPageActivity";
+
+    //ASUS
+    private static final String ASUS_ACTION_POWERSAVING_PKG = "com.asus.mobilemanager";
+    private static final String ASUS_ACTION_POWERSAVING_CLS = "com.asus.mobilemanager.MainActivity";
+
+    //TRANSSION
+    private static final String TRANSSION_ACTION_POWERSAVING_PKG = "com.transsion.phonemanager";
+    private static final String TRANSSION_ACTION_POWERSAVING_CLS = "com.itel.autobootmanager.activity.AutoBootMgrActivity";
+
+    public ArrayList<Intent> powerManagerIntents;
 
     public Constants(Context context){
         this.context = context;
@@ -64,9 +101,16 @@ public class Constants {
 
         // Xiaomi intents
         Intent xiomi_1 = new Intent();
-        xiomi_1.setComponent(new ComponentName(MIUI_ACTION_POWERSAVE[0], MIUI_ACTION_POWERSAVE[1]));
+        xiomi_1.setComponent(new ComponentName(MIUI_ACTION_AUTOSTART[0], MIUI_ACTION_AUTOSTART[1]));
         xiomi_1.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_NAME, context.getPackageName());
         xiomi_1.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_LABEL, getApplicationName());
+        xiomi_1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Intent xiomi_2 = new Intent();
+        xiomi_2.setComponent(new ComponentName(MIUI_ACTION_POWERSAVE[0], MIUI_ACTION_POWERSAVE[1]));
+        xiomi_2.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_NAME, context.getPackageName());
+        xiomi_2.putExtra(MIUI_ACTION_POWER_SAVE_EXTRA_LABEL, getApplicationName());
+        xiomi_2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         // Samsung intents
         Intent samsung_1 = new Intent();
@@ -90,11 +134,17 @@ public class Constants {
         huawei_1.setAction(HUAWEI_ACTION_POWERSAVING);
         Intent huawei_2 = new Intent();
         huawei_2.setComponent(new ComponentName(HUAWEI_COMPONENT_POWERSAVING_PKG, HUAWEI_COMPONENT_POWERSAVING_CLS));
+        Intent huawei_3 = new Intent();
+        huawei_3.setComponent(new ComponentName(HUAWEI_COMPONENT_POWERSAVING_PKG, HUAWEI_COMPONENT_POWERSAVING2_CLS));
+        Intent huawei_4 = new Intent();
+        huawei_4.setComponent(new ComponentName(HUAWEI_COMPONENT_POWERSAVING_PKG, HUAWEI_COMPONENT_POWERSAVING3_CLS));
 
         // LeTV
         // TODO Test it
         Intent letv_1 = new Intent();
-        huawei_1.setComponent(new ComponentName(LETV_ACTION_POWERSAVING_PKG, LETV_ACTION_POWERSAVING_CLS));
+        letv_1.setComponent(new ComponentName(LETV_ACTION_POWERSAVING_PKG, LETV_ACTION_POWERSAVING_CLS));
+        Intent letv_2 = new Intent();
+        letv_2.setComponent(new ComponentName(LETV_ACTION_POWERSAVING_PKG, LETV_ACTION_AUTOBOOT_CLS));
 
         // Meizu
         // TODO Test it
@@ -107,25 +157,77 @@ public class Constants {
         Intent meizu_4 = new Intent();
         meizu_4.setClassName(MEIZU_DEFAULT_PACKAGE, MEIZU_POWERSAVING_ACTIVITY_V3_7);
 
-        // TODO ASUS, OPPO, Elephone, Sony STAMINA, Huawei Phone manager (EMUI 5)
+        // ColorOS
+        // TODO Test it
+        Intent coloros_1 = new Intent();
+        coloros_1.setComponent(new ComponentName(COLOROS_ACTION_POWERSAVING_PKG, COLOROS_ACTION_AUTOBOOT1_CLS));
+        Intent coloros_2 = new Intent();
+        coloros_2.setComponent(new ComponentName(COLOROS_ACTION_POWERSAVING_PKG, COLOROS_ACTION_AUTOBOOT2_CLS));
 
-        powerManagerIntents = Arrays.asList(
+        // OPPO
+        // TODO Test it
+        Intent oppo_1 = new Intent();
+        oppo_1.setComponent(new ComponentName(OPPO_ACTION_POWERSAVING_PKG, OPPO_ACTION_POWERSAVING_CLS));
+
+        // IQOO
+        // TODO Test it
+        Intent iqoo_1 = new Intent();
+        iqoo_1.setComponent(new ComponentName(IQOO_ACTION_POWERSAVING_PKG, IQOO_ACTION_POWERSAVING1_CLS));
+        Intent iqoo_2 = new Intent();
+        iqoo_2.setComponent(new ComponentName(IQOO_ACTION_POWERSAVING_PKG, IQOO_ACTION_POWERSAVING2_CLS));
+
+        // VIVO
+        // TODO Test it
+        Intent vivo_1 = new Intent();
+        vivo_1.setComponent(new ComponentName(VIVO_ACTION_POWERSAVING_PKG, VIVO_ACTION_POWERSAVING_CLS));
+
+        // HTC
+        // TODO Test it
+        Intent htc_1 = new Intent();
+        htc_1.setComponent(new ComponentName(HTC_ACTION_POWERSAVING_PKG, HTC_ACTION_POWERSAVING_CLS));
+
+        // ASUS
+        // TODO Test it
+        Intent asus_1 = new Intent();
+        asus_1.setComponent(new ComponentName(ASUS_ACTION_POWERSAVING_PKG, ASUS_ACTION_POWERSAVING_CLS));
+
+        // TRANSSION
+        // TODO Test it
+        Intent transsion_1 = new Intent();
+        transsion_1.setComponent(new ComponentName(TRANSSION_ACTION_POWERSAVING_PKG, TRANSSION_ACTION_POWERSAVING_CLS));
+
+        // TODO ASUS, Elephone, Sony STAMINA, Huawei Phone manager (EMUI 5)
+
+        powerManagerIntents = new ArrayList<Intent>(Arrays.asList(
                 xiomi_1,
-                samsung_1,
+                xiomi_2,
+                //samsung_1,
                 samsung_2,
                 samsung_3,
                 samsung_4,
-                huawei_1,
+                //huawei_1,
                 huawei_2,
+                huawei_3,
+                huawei_4,
                 letv_1,
-                meizu_1,
+                letv_2,
+                //meizu_1,
                 meizu_2,
                 meizu_3,
-                meizu_4
-        );
+                meizu_4,
+                coloros_1,
+                coloros_2,
+                oppo_1,
+                iqoo_1,
+                iqoo_2,
+                vivo_1,
+                htc_1,
+                asus_1,
+                transsion_1
+        ));
     }
 
-    public List<Intent> getPowermanagerIntents(){
+    public ArrayList<Intent> getPowermanagerIntents(){
         return powerManagerIntents;
     }
 

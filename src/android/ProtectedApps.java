@@ -12,9 +12,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ProtectedApps {
     public static final String TAG = "ProtectedApps";
+
+    public static Constants cons;
 
     // This method checks if can fire the one of a list of intents and fire it
     public static void ProtectedAppCheck(Context context, CallbackContext callbackContext, boolean forceShow) throws JSONException {
@@ -26,17 +30,17 @@ public class ProtectedApps {
         boolean skipMessage = settings.getBoolean("skipProtectedAppCheck", false);
         boolean foundCorrectIntent = false;
         if(!skipMessage || forceShow){
-            Constants cons = new Constants(context);
-            for (Intent intent : cons.getPowermanagerIntents()) {
+            if (cons == null) cons = new Constants(context);
+            for (Iterator<Intent> iter = cons.getPowermanagerIntents().listIterator(); iter.hasNext(); ) {
+                Intent intent = iter.next();
                 if (isCallable(context, intent)) {
                     foundCorrectIntent = true;
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    iter.remove();
                     context.startActivity(intent);
                     break;
                 }
             }
         }
-        
         editor.putBoolean("skipProtectedAppCheck", true);
         editor.apply();
 
@@ -55,17 +59,19 @@ public class ProtectedApps {
         boolean skipMessage = settings.getBoolean("skipProtectedAppCheck", false);
 
         Boolean found_intent = false;
-        Constants cons = new Constants(context);
+        String found_intent_title = "";
+        if (cons == null) cons = new Constants(context);
         for (Intent intent : cons.getPowermanagerIntents()) {
             if (isCallable(context, intent)) {
                 found_intent = true;
+                found_intent_title = intent.getComponent().getClassName();
                 break;
             }
         }
 
         result.put("skip_message", skipMessage);
         result.put("found_intent", found_intent);
-
+        result.put("title", found_intent_title);
         callbackContext.success(result);
     }
 
