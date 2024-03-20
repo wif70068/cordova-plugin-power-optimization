@@ -28,7 +28,9 @@ public class Constants {
     // SAMSUNG ANDROID 7.0
     private static final String SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V3 = "com.samsung.android.lool";
     private static final String SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V3_ACTIVITY = "com.samsung.android.sm.ui.battery.BatteryActivity";
-
+    private static final String SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V4 = "com.samsung.android.lool";
+    private static final String SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V4_ACTIVITY = "com.samsung.android.sm.battery.ui.BatteryActivity";
+    
     // SAMSUNG ANDROID 6.0
     private static final String SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V2 = "com.samsung.android.sm_cn";
     private static final String SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V2_ACTIVITY = "com.samsung.android.sm.ui.battery.BatteryActivity";
@@ -127,6 +129,10 @@ public class Constants {
         samsung_4.setComponent(new ComponentName(SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V1, SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V1_ACTIVITY));
         samsung_4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
+        Intent samsung_5 = new Intent();
+        samsung_5.setComponent(new ComponentName(SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V4, SAMSUNG_SYSTEMMANAGER_POWERSAVING_PACKAGE_V4_ACTIVITY));
+        samsung_5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         // Huawei
         Intent huawei_1 = new Intent();
         huawei_1.setAction(HUAWEI_ACTION_POWERSAVING);
@@ -203,6 +209,7 @@ public class Constants {
                 samsung_2,
                 samsung_3,
                 samsung_4,
+                samsung_5,
                 //huawei_1,
                 huawei_2,
                 huawei_3,
