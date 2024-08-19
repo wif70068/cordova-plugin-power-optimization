@@ -36,6 +36,7 @@ public class ProtectedApps {
                 if (isCallable(context, intent)) {
                     foundCorrectIntent = true;
                     iter.remove();
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     break;
                 }
